@@ -45,3 +45,12 @@ export interface ResponseImage {
   _id: string;
   _v: number;
 }
+
+export interface ResponseEmail {
+  _id: string;
+  name: string;
+  phone: string;
+  email: string;
+  message: string;
+  __v: number;
+}

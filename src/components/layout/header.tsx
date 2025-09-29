@@ -8,6 +8,9 @@ export default function Header() {
         <Link to="/proyects" className="hover:underline">
           Proyectos
         </Link>
+        <Link to="/email" className="hover:underline">
+          Emails
+        </Link>
       </div>
     </header>
   );

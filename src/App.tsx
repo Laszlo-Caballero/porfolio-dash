@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router";
 import ProjectsRoute from "./routes/proyects.route";
 import Header from "./components/layout/header";
+import Email from "./pages/email";
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<h1>Hola Mundo</h1>} />
           <Route path="/proyects/*" element={<ProjectsRoute />} />
+          <Route path="/email" element={<Email />} />
         </Routes>
       </div>
     </div>
