@@ -1,9 +1,9 @@
 import { CONFIG } from "@/config/config";
-import type { ResponseImage } from "@/interface/types";
+import type { Response, ResponseImage } from "@/interface/types";
 import axios from "axios";
 
 export class FileService {
-  async uploadFile(file: File): Promise<ResponseImage> {
+  async uploadFile(file: File): Promise<Response<ResponseImage>> {
     const formData = new FormData();
     formData.append("file", file);
     const res = await axios.post(`${CONFIG.API_URL}/files`, formData);

@@ -12,6 +12,7 @@ const DetailsSchema = z.object({
 
 export const ProjectSchema = z.object({
   title: z.string(),
+  slug: z.string(),
   description: z.string(),
   urlImage: ImageSchema,
   images: z.array(ImageSchema),

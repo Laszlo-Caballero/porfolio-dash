@@ -23,14 +23,16 @@ export class ProyectsService {
         };
       })
     );
+
     const payload = {
-      tite: data.title,
+      title: data.title,
+      slug: data.slug,
       description: data.description,
       urlImage: {
-        url: resUrlImage.url,
+        url: resUrlImage.body.url,
         alt: urlImage.alt,
       },
-      images: resImages.map(({ res, alt }) => ({ url: res.url, alt })),
+      images: resImages.map(({ res, alt }) => ({ url: res.body.url, alt })),
       githubUrl: data.githubUrl,
       tecnologies: data.tecnologies,
       details: data.details,

@@ -50,9 +50,8 @@ export default function CreateProyect() {
       toast.success("Proyecto creado con éxito");
       navigate("/proyects");
     },
-    onError: (error) => {
+    onError: () => {
       toast.error("Error al crear el proyecto");
-      console.log(error);
     },
   });
 
@@ -80,6 +79,24 @@ export default function CreateProyect() {
               </FormControl>
               <FormDescription>
                 El titulo debe ser conciso y descriptivo.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="slug"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Slug</FormLabel>
+              <FormControl>
+                <Input placeholder="Slug del proyecto" {...field} />
+              </FormControl>
+              <FormDescription>
+                El slug es una versión amigable del título para URLs (sin
+                espacios, todo en minúsculas, separado por guiones).
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -449,7 +466,6 @@ export default function CreateProyect() {
                         placeholder="URL de la imagen"
                         onChange={(e) => {
                           const file = e.target.files?.[0];
-                          console.log(file);
                           if (file) {
                             setImages({ ...images, file });
                           }
