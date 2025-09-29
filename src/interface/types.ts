@@ -37,3 +37,11 @@ export interface Image {
   alt: string;
   _id: string;
 }
+
+export interface ResponseImage {
+  name: string;
+  url: string;
+  type: string;
+  _id: string;
+  _v: number;
+}

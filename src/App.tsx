@@ -7,7 +7,7 @@ export default function App() {
     <div className="flex flex-col min-h-screen">
       <Header />
 
-      <div className="flex flex-col flex-1 h-full w-full bg-gray-100 p-4">
+      <div className="flex flex-col flex-1 h-full w-full   p-4">
         <Routes>
           <Route path="/" element={<h1>Hola Mundo</h1>} />
           <Route path="/proyects/*" element={<ProjectsRoute />} />
