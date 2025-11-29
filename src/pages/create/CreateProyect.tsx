@@ -63,6 +63,9 @@ export default function CreateProyect() {
 
   const arquitecture = form.watch("arquitecture", []);
 
+  console.log(form.watch());
+  console.log("errors", form.formState.errors);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -704,11 +707,14 @@ export default function CreateProyect() {
                     <FormItem>
                       <FormLabel>ColSpan</FormLabel>
                       <FormControl>
-                        <Input placeholder="ColSpan" type="number" {...field} 
-                        onChange={(e)=>{
-                          const value = parseInt(e.target.value, 10);
-                          field.onChange(isNaN(value) ? 1 : value);
-                        }}
+                        <Input
+                          placeholder="ColSpan"
+                          type="number"
+                          {...field}
+                          onChange={(e) => {
+                            const value = parseInt(e.target.value, 10);
+                            field.onChange(isNaN(value) ? 1 : value);
+                          }}
                         />
                       </FormControl>
                       <FormDescription>
