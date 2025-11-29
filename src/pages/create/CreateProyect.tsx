@@ -20,6 +20,7 @@ import { proyectsService } from "@/services/proyects.service";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function CreateProyect() {
   const form = useForm({
@@ -34,6 +35,7 @@ export default function CreateProyect() {
   const [tecnologies, setTecnologies] = useState("");
   const [objectives, setObjectives] = useState("");
   const [learnings, setLearnings] = useState("");
+  const [badgeInput, setBadgeInput] = useState("");
   const [images, setImages] = useState<{
     file: File | null;
     alt: string;
@@ -58,6 +60,8 @@ export default function CreateProyect() {
   const onSubmit = (data: Project) => {
     mutate(data);
   };
+
+  const arquitecture = form.watch("arquitecture", []);
 
   return (
     <Form {...form}>
@@ -85,23 +89,40 @@ export default function CreateProyect() {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="slug"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Slug</FormLabel>
-              <FormControl>
-                <Input placeholder="Slug del proyecto" {...field} />
-              </FormControl>
-              <FormDescription>
-                El slug es una versión amigable del título para URLs (sin
-                espacios, todo en minúsculas, separado por guiones).
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex items-center w-full gap-2">
+          <FormField
+            control={form.control}
+            name="slug"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Slug</FormLabel>
+                <FormControl>
+                  <Input placeholder="Slug del proyecto" {...field} />
+                </FormControl>
+                <FormDescription>
+                  El slug es una versión amigable del título para URLs (sin
+                  espacios, todo en minúsculas, separado por guiones).
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="outStanding"
+            render={({ field }) => (
+              <FormItem className="flex items-center">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={(checked) => field.onChange(checked)}
+                  />
+                </FormControl>
+                <FormLabel>Destacado</FormLabel>
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           control={form.control}
@@ -193,6 +214,23 @@ export default function CreateProyect() {
               </FormControl>
               <FormDescription>
                 Proporcione la URL del repositorio de GitHub.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="githubBackendUrl"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>URL de GitHub Backend</FormLabel>
+              <FormControl>
+                <Input placeholder="URL de GitHub Backend" {...field} />
+              </FormControl>
+              <FormDescription>
+                Proporcione la URL del repositorio de GitHub Backend.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -300,6 +338,23 @@ export default function CreateProyect() {
                   </FormControl>
                   <FormDescription>
                     Indique el tiempo que dedicó al proyecto.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="details.team"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Equipo</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Equipo del proyecto" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Indique el equipo del proyecto.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -449,6 +504,218 @@ export default function CreateProyect() {
               ))}
             </div>
           )}
+        </div>
+
+        <div className="flex flex-col w-full gap-y-4">
+          <span className="flex items-center w-full gap-2">
+            <div className="w-full">
+              <h2 className="text-xl font-bold border-b pb-2">
+                Arquitectura del Proyecto
+              </h2>
+              <p className="text-gray-600 text-sm">
+                Agrega al menos dos secciones para describir la arquitectura del
+              </p>
+            </div>
+
+            <Button
+              type="button"
+              onClick={() => {
+                const arquitecture = form.getValues("arquitecture") || [];
+                form.setValue("arquitecture", [
+                  ...arquitecture,
+                  {
+                    title: "",
+                    badges: [],
+                    detail: [],
+                  },
+                ]);
+              }}
+            >
+              Agregar Sección de Arquitectura
+            </Button>
+          </span>
+
+          {arquitecture.map((_, index) => (
+            <div className="grid grid-cols-2 gap-2">
+              <h1 className="col-span-2 text-xl font-semibold">
+                Sección {index + 1} de {arquitecture.length}
+              </h1>
+
+              <FormField
+                control={form.control}
+                name={`arquitecture.${index}.title`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Título de la Sección</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Título" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      Proporcione el título de la sección de arquitectura.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="flex flex-col w-full gap-y-4">
+                <FormField
+                  control={form.control}
+                  name={`arquitecture.${index}.badges`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Badges</FormLabel>
+                      <FormControl>
+                        <div className="flex gap-x-2">
+                          {" "}
+                          <Input
+                            placeholder="Badges del proyecto"
+                            onChange={(e) => setBadgeInput(e.target.value)}
+                            value={badgeInput}
+                          />
+                          <Button
+                            type="button"
+                            onClick={() => {
+                              if (badgeInput) {
+                                field.onChange([
+                                  ...(field.value || []),
+                                  badgeInput,
+                                ]);
+                                setBadgeInput("");
+                              }
+                            }}
+                          >
+                            Agregar
+                          </Button>
+                        </div>
+                      </FormControl>
+                      <FormDescription>
+                        Proporcione los badges del proyecto.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {(form.watch(`arquitecture.${index}.badges`, []) || []).length >
+                  0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {(form.watch(`arquitecture.${index}.badges`, []) || []).map(
+                      (obj, index) => (
+                        <Badge
+                          className="flex items-center gap-x-4 justify-center"
+                          color="info"
+                          key={index}
+                        >
+                          {obj}
+                          <button
+                            type="button"
+                            className="hover:text-red-500 cursor-pointer ml-2"
+                            onClick={() => {
+                              const newTechs = (
+                                form.watch(
+                                  `arquitecture.${index}.badges`,
+                                  []
+                                ) as string[]
+                              ).filter((_, idx) => idx !== index);
+                              form.setValue(
+                                `arquitecture.${index}.badges`,
+                                newTechs
+                              );
+                            }}
+                          >
+                            <FaTrash />
+                          </button>
+                        </Badge>
+                      )
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col w-full gap-y-4">
+                <div className="flex items-center gap-2">
+                  <h1 className="text-xl font-semibold">
+                    Agregar detalle clave - valor en la sección de arquitectura
+                  </h1>
+                  <Button
+                    onClick={() => {
+                      const details =
+                        form.getValues(`arquitecture.${index}.detail`) || [];
+                      form.setValue(`arquitecture.${index}.detail`, [
+                        ...details,
+                        {
+                          key: "",
+                          value: "",
+                        },
+                      ]);
+                    }}
+                    type="button"
+                  >
+                    Agregar Detalle
+                  </Button>
+                </div>
+
+                {(form.watch(`arquitecture.${index}.detail`) || []).map(
+                  (_, detailIndex) => (
+                    <div className="flex items-center gap-2">
+                      <FormField
+                        control={form.control}
+                        name={`arquitecture.${index}.detail.${detailIndex}.key`}
+                        render={({ field }) => (
+                          <FormItem className="w-full">
+                            <FormLabel>Clave</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Clave" {...field} />
+                            </FormControl>
+                            <FormDescription>
+                              Proporcione la clave del detalle.
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`arquitecture.${index}.detail.${detailIndex}.value`}
+                        render={({ field }) => (
+                          <FormItem className="w-full">
+                            <FormLabel>Valor</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Valor" {...field} />
+                            </FormControl>
+                            <FormDescription>
+                              Proporcione el valor del detalle.
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  )
+                )}
+              </div>
+
+              <div>
+                <FormField
+                  control={form.control}
+                  name={`arquitecture.${index}.colSpan`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>ColSpan</FormLabel>
+                      <FormControl>
+                        <Input placeholder="ColSpan" type="number" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        Proporcione el colSpan de la sección de arquitectura.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+          ))}
         </div>
 
         <div className="flex flex-col w-full gap-y-4">
