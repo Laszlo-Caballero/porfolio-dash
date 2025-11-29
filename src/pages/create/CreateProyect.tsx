@@ -704,7 +704,12 @@ export default function CreateProyect() {
                     <FormItem>
                       <FormLabel>ColSpan</FormLabel>
                       <FormControl>
-                        <Input placeholder="ColSpan" type="number" {...field} />
+                        <Input placeholder="ColSpan" type="number" {...field} 
+                        onChange={(e)=>{
+                          const value = parseInt(e.target.value, 10);
+                          field.onChange(isNaN(value) ? 1 : value);
+                        }}
+                        />
                       </FormControl>
                       <FormDescription>
                         Proporcione el colSpan de la sección de arquitectura.
