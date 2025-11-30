@@ -363,6 +363,22 @@ export default function CreateProyect() {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="details.status"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Estado</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Estado del proyecto" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Indique el estado del proyecto
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
         </div>
 
