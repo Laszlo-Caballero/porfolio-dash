@@ -30,6 +30,8 @@ export default function CreateProyect() {
       images: [],
       objectives: [],
       learnings: [],
+      keywords: [],
+      arquitecture: [],
     },
   });
   const [tecnologies, setTecnologies] = useState("");
