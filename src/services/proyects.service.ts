@@ -35,6 +35,7 @@ export class ProyectsService {
       },
       images: resImages.map(({ res, alt }) => ({ url: res.body.url, alt })),
       githubUrl: data.githubUrl,
+      ...(data.githubBackendUrl && { githubBackendUrl: data.githubBackendUrl }),
       tecnologies: data.tecnologies,
       details: data.details,
       detail: data.detail,
