@@ -28,6 +28,7 @@ export class ProyectsService {
       title: data.title,
       slug: data.slug,
       description: data.description,
+      keywords: data.keywords,
       urlImage: {
         url: resUrlImage.body.url,
         alt: urlImage.alt,
