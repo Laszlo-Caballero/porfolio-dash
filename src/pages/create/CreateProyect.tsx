@@ -35,6 +35,7 @@ export default function CreateProyect() {
   const [tecnologies, setTecnologies] = useState("");
   const [objectives, setObjectives] = useState("");
   const [learnings, setLearnings] = useState("");
+  const [keywordInput, setKeywordInput] = useState("");
   const [badgeInput, setBadgeInput] = useState("");
   const [images, setImages] = useState<{
     file: File | null;
@@ -127,6 +128,69 @@ export default function CreateProyect() {
           />
         </div>
 
+        <div className="flex flex-col w-full gap-y-4">
+          <FormField
+            control={form.control}
+            name="keywords"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Keywords</FormLabel>
+                <FormControl>
+                  <div className="flex gap-x-2">
+                    {" "}
+                    <Input
+                      placeholder="Keywords del proyecto"
+                      onChange={(e) => setKeywordInput(e.target.value)}
+                      value={keywordInput}
+                    />
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        if (keywordInput) {
+                          field.onChange([...field.value, keywordInput]);
+                          setKeywordInput("");
+                        }
+                      }}
+                    >
+                      Agregar
+                    </Button>
+                  </div>
+                </FormControl>
+                <FormDescription>
+                  Proporcione las keywords del proyecto.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {form.watch("keywords").length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {form.watch("keywords").map((obj, index) => (
+                <Badge
+                  className="flex items-center gap-x-4 justify-center"
+                  color="info"
+                  key={index}
+                >
+                  {obj}
+                  <button
+                    type="button"
+                    className="hover:text-red-500 cursor-pointer ml-2"
+                    onClick={() => {
+                      const newTechs = form
+                        .watch("keywords")
+                        .filter((_, idx) => idx !== index);
+                      form.setValue("keywords", newTechs);
+                    }}
+                  >
+                    <FaTrash />
+                  </button>
+                </Badge>
+              ))}
+            </div>
+          )}
+        </div>
+
         <FormField
           control={form.control}
           name="description"
@@ -135,6 +199,23 @@ export default function CreateProyect() {
               <FormLabel>Descripción</FormLabel>
               <FormControl>
                 <Textarea placeholder="Descripción del proyecto" {...field} />
+              </FormControl>
+              <FormDescription>
+                La descripción debe ser detallada y clara.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="detail"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Detalle Card</FormLabel>
+              <FormControl>
+                <Textarea placeholder="Detalle corto del proyecto" {...field} />
               </FormControl>
               <FormDescription>
                 La descripción debe ser detallada y clara.

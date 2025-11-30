@@ -28,6 +28,8 @@ export const ProjectSchema = z.object({
   title: z.string(),
   slug: z.string(),
   description: z.string(),
+  detail: z.string(),
+  keywords: z.array(z.string()).min(1),
   urlImage: ImageSchema,
   images: z.array(ImageSchema),
   githubUrl: z.string().url(),
